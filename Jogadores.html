@@ -5,7 +5,54 @@
         <title>Menu de Jogadores</title>
         <link rel="stylesheet" href="submenus.css">
         <script>
-            
+            let jogadores = []
+            function Incluir(){
+                try{
+                    let cpf = document.getElementById("cpf").value
+                    let nome = document.getElementById("nome").value
+                    let data = document.getElementById("data").value
+                    let sexo = document.getElementById("sexo").value
+                    let peso = document.getElementById("peso").value
+                    let altura = document.getElementById("altura").value
+                    let emails = document.getElementById("emails").value
+                    let telefones = document.getElementById("telefones").value
+                    let posicao_jogo = document.getElementById("posicao_jogo").value
+                    const jogador = { 
+                        cpf: cpf,
+                        nome: nome,
+                        data: data,
+                        sexo: sexo,
+                        peso: peso,
+                        altura: altura,
+                        emails: emails,
+                        telefones: telefones,
+                        posicao_jogo: posicao_jogo,
+                    }
+                    jogadores.push(jogador)
+                    console.log('jogadores:', JSON.stringify(jogadores))
+                    localStorage.setItem("jogadoresStorage", JSON.stringify(jogadores))
+                    let str = '<tr>'
+                    let tabela = document.getElementById("tabela").lastElementChild
+                    console.log(tabela)
+                    let atrs = [cpf, nome, data, sexo, peso, altura, emails, telefones, posicao_jogo]
+                    let tr = document.createElement("tr")
+                    let td
+                    for(let atr of atrs){
+                        let textNode = document.createTextNode(`${atr}`);
+                        td = document.createElement("td");
+                        td.appendChild(textNode);
+                        tr.appendChild(td);
+                    }
+                    let elementoTabela = document.getElementById("tabela");
+                    elementoTabela.appendChild(tr);
+                    
+                }catch(e){
+                    console.log(e)
+                    alert(e)
+                }
+                
+                
+            }
         </script>
     </head>
     <body>
@@ -23,7 +70,7 @@
             
             <label>ALTURA: <input id="altura"></label>
             
-            <label>EMAILS: <input id="email" type="email"></label>
+            <label>EMAILS: <input id="emails" type="email"></label>
             
             <label>TELEFONES: <input id="telefones" type=""></label>
             
@@ -31,14 +78,14 @@
             
             <h3>SELECIONE A OPÇÃO QUE DESEJA UTILIZAR</h3>
             <div>
-                <button>INCLUIR</button>
+                <button onclick="Incluir()">INCLUIR</button>
                 <button>LISTAR TODOS</button>
                 <button>LISTAR UM</button>
                 <button>ALTERAR</button>
                 <button>EXCLUIR</button>
             </div>
         </div>
-        <table>
+        <table id="tabela">
             <tr>
               <th>CPF</th>
               <th>NOME</th>
