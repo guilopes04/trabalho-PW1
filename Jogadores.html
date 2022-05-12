@@ -2,18 +2,54 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>Menu Principal</title>
-        <link rel="stylesheet" href="index.css">
+        <title>Menu de Jogadores</title>
+        <link rel="stylesheet" href="submenus.css">
         <script>
             
         </script>
     </head>
     <body>
         <div class="menu_principal">
-            <h3>SELECIONE O MENU QUE DESEJA UTILIZAR</h3>
-            <button class="bttn-menus">MENU DE JOGADORES</button>
-            <button class="bttn-menus">Menu de 2</button>
-            <button class="bttn-menus">Menu de 3</button>
+            <h1>MENU JOGADORES</h1>
+            <label>CPF: <input id="cpf"></label>
+            
+            <label>NOME: <input id="nome"></label>
+            
+            <label>DATA DE NASCIMENTO: <input type="date" id="data"></label>
+            
+            <label>SEXO: <input id="sexo"></label>
+            
+            <label>PESO: <input id="peso"></label>
+            
+            <label>ALTURA: <input id="altura"></label>
+            
+            <label>EMAILS: <input id="email" type="email"></label>
+            
+            <label>TELEFONES: <input id="telefones" type=""></label>
+            
+            <label>POSIÇÕES EM JOGO: <input id="posicao_jogo"></label>
+            
+            <h3>SELECIONE A OPÇÃO QUE DESEJA UTILIZAR</h3>
+            <div>
+                <button>INCLUIR</button>
+                <button>LISTAR TODOS</button>
+                <button>LISTAR UM</button>
+                <button>ALTERAR</button>
+                <button>EXCLUIR</button>
+            </div>
         </div>
+        <table>
+            <tr>
+              <th>CPF</th>
+              <th>NOME</th>
+              <th>DATA DE NASCIMENTO</th>
+              <th>SEXO</th>
+              <th>PESO</th>
+              <th>ALTURA</th>
+              <th>EMAILS</th>
+              <th>TELEFONES</th>
+              <th>POSIÇÕES EM JOGO</th>
+            </tr>
+          </table>
     </body>
 </html>
