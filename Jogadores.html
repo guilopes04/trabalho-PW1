@@ -6,53 +6,217 @@
         <link rel="stylesheet" href="submenus.css">
         <script>
             let jogadores = []
-            function Incluir(){
+            function incluir(){
                 try{
+                    let achou = false
+                    let storage = localStorage.getItem("jogadoresStorage");
                     let cpf = document.getElementById("cpf").value
-                    let nome = document.getElementById("nome").value
-                    let data = document.getElementById("data").value
-                    let sexo = document.getElementById("sexo").value
-                    let peso = document.getElementById("peso").value
-                    let altura = document.getElementById("altura").value
-                    let emails = document.getElementById("emails").value
-                    let telefones = document.getElementById("telefones").value
-                    let posicao_jogo = document.getElementById("posicao_jogo").value
-                    const jogador = { 
-                        cpf: cpf,
-                        nome: nome,
-                        data: data,
-                        sexo: sexo,
-                        peso: peso,
-                        altura: altura,
-                        emails: emails,
-                        telefones: telefones,
-                        posicao_jogo: posicao_jogo,
+                    if(storage){
+                        let jogadores = JSON.parse(storage);
+                        console.log(jogadores);
+                        for(let i = 0; i < jogadores.length; i++){
+                            if(cpf == jogadores[i].cpf){
+                                alert(`O jogador com o cpf ${cpf} já existe`)
+                                achou = true
+                            }
+                        }
                     }
-                    jogadores.push(jogador)
-                    console.log('jogadores:', JSON.stringify(jogadores))
-                    localStorage.setItem("jogadoresStorage", JSON.stringify(jogadores))
-                    let str = '<tr>'
-                    let tabela = document.getElementById("tabela").lastElementChild
-                    console.log(tabela)
-                    let atrs = [cpf, nome, data, sexo, peso, altura, emails, telefones, posicao_jogo]
-                    let tr = document.createElement("tr")
-                    let td
-                    for(let atr of atrs){
-                        let textNode = document.createTextNode(`${atr}`);
-                        td = document.createElement("td");
-                        td.appendChild(textNode);
-                        tr.appendChild(td);
+                    
+                    if(!achou || !storage){
+                        let nome = document.getElementById("nome").value
+                        let data = document.getElementById("data").value
+                        let sexo = document.getElementById("sexo").value
+                        let peso = document.getElementById("peso").value
+                        let altura = document.getElementById("altura").value
+                        let emails = document.getElementById("emails").value
+                        let telefones = document.getElementById("telefones").value
+                        let posicao_jogo = document.getElementById("posicao_jogo").value
+                        const jogador = { 
+                            cpf: cpf,
+                            nome: nome,
+                            data: data,
+                            sexo: sexo,
+                            peso: peso,
+                            altura: altura,
+                            emails: emails,
+                            telefones: telefones,
+                            posicao_jogo: posicao_jogo,
+                        }
+                        jogadores.push(jogador)
+                        console.log('jogadores:', JSON.stringify(jogadores))
+                        localStorage.setItem("jogadoresStorage", JSON.stringify(jogadores))
+                        let str = '<tr>'
+                        let tabela = document.getElementById("tabela").lastElementChild
+                        console.log(tabela)
+                        let atrs = [cpf, nome, data, sexo, peso, altura, emails, telefones, posicao_jogo]
+                        let tr = document.createElement("tr")
+                        let td
+                        for(let atr of atrs){
+                            let textNode = document.createTextNode(`${atr}`);
+                            td = document.createElement("td");
+                            td.appendChild(textNode);
+                            tr.appendChild(td);
+                        }
+                        let elementoTabela = document.getElementById("tabela");
+                        elementoTabela.appendChild(tr);
                     }
-                    let elementoTabela = document.getElementById("tabela");
-                    elementoTabela.appendChild(tr);
+                }catch(e){
+                    console.log(e)
+                    alert(e)
+                }
+            }
+            function listarTodos(){
+                try{
+                    let achou = -1
+                    let storage = localStorage.getItem("jogadoresStorage");
+                    console.log(storage)
+                    if(storage){
+                        let lista_jogadores = JSON.parse(storage);
+                        console.log(lista_jogadores);
+                        let str = '<tr>'
+                        str += '<th>CPF</th>'
+                        str += '<th>NOME</th>'
+                        str += '<th>DATA DE NASCIMENTO</th>'
+                        str += '<th>SEXO</th>'
+                        str += '<th>PESO</th>'
+                        str += '<th>ALTURA</th>'
+                        str += '<th>EMAILS</th>'
+                        str += '<th>TELEFONES</th>'
+                        str += '<th>POSIÇÕES EM JOGO</th>'
+                        str += '</tr>'
+                        for(jogador of lista_jogadores){
+                            str += '<tr>'
+                            str += '<td>' + jogador.cpf + '</td>'
+                            str += '<td>' + jogador.nome + '</td>'
+                            str += '<td>' + jogador.data + '</td>'
+                            str += '<td>' + jogador.sexo + '</td>'
+                            str += '<td>' + jogador.peso + '</td>'
+                            str += '<td>' + jogador.altura + '</td>'
+                            str += '<td>' + jogador.emails + '</td>'
+                            str += '<td>' + jogador.telefones + '</td>'
+                            str += '<td>' + jogador.posicao_jogo + '</td>'
+                            str += '</tr>'
+                        }
+                        let elementoTabela = document.getElementById("tabela");
+                        elementoTabela.innerHTML = str
+                    }else{
+                        alert('não existe jogadores')
+                    }
+                        
+                }catch(e){
+                    console.log(e)
+                    alert(e)
+                }
+            }
+            function listarUm(){
+                try{
+                    let achou = -1
+                    let storage = localStorage.getItem("jogadoresStorage");
+                    if(storage){
+                        let jogadores = JSON.parse(storage);
+                        let cpf = document.getElementById("cpf").value
+                        for(let i = 0; i < jogadores.length; i++){
+                            if(cpf == jogadores[i].cpf){
+                                achou = i
+                            }
+                        }
+                        if(achou != -1){
+                            let str = '<tr>'
+                            str += '<th>CPF</th>'
+                            str += '<th>NOME</th>'
+                            str += '<th>DATA DE NASCIMENTO</th>'
+                            str += '<th>SEXO</th>'
+                            str += '<th>PESO</th>'
+                            str += '<th>ALTURA</th>'
+                            str += '<th>EMAILS</th>'
+                            str += '<th>TELEFONES</th>'
+                            str += '<th>POSIÇÕES EM JOGO</th>'
+                            str += '</tr>'
+                            str += '<tr>'
+                            str += '<td>' + jogadores[achou].cpf + '</td>'
+                            str += '<td>' + jogadores[achou].nome + '</td>'
+                            str += '<td>' + jogadores[achou].data + '</td>'
+                            str += '<td>' + jogadores[achou].sexo + '</td>'
+                            str += '<td>' + jogadores[achou].peso + '</td>'
+                            str += '<td>' + jogadores[achou].altura + '</td>'
+                            str += '<td>' + jogadores[achou].emails + '</td>'
+                            str += '<td>' + jogadores[achou].telefones + '</td>'
+                            str += '<td>' + jogadores[achou].posicao_jogo + '</td>'
+                            str += '</tr>'
+                            let elementoTabela = document.getElementById("tabela");
+                            elementoTabela.innerHTML = str
+                        }else{
+                            alert("jogador não encontrado")
+                        }
+                    }else{
+                        alert('não existe jogadores')
+                    }
+                }catch(e){
+                    console.log(e)
+                    alert(e)
+                }
+            }
+            function altera(){
+                try{
+                    let achou = -1
+                    let storage = localStorage.getItem("jogadoresStorage");
+                    let jogadores = JSON.parse(storage);
+                    let cpf = document.getElementById("cpf").value
+                    for(let i = 0; i < jogadores.length; i++){
+                        if(cpf == jogadores[i].cpf){
+                            achou = i
+                        }
+                    }
+                    if(achou != -1){
+                        console.log('achou', achou)
+                        let nome = document.getElementById("nome").value
+                        let data = document.getElementById("data").value
+                        let sexo = document.getElementById("sexo").value
+                        let peso = document.getElementById("peso").value
+                        let altura = document.getElementById("altura").value
+                        let emails = document.getElementById("emails").value
+                        let telefones = document.getElementById("telefones").value
+                        let posicao_jogo = document.getElementById("posicao_jogo").value
+                        if(nome) jogadores[achou].nome = nome
+                        if(data) jogadores[achou].data = data
+                        if(sexo) jogadores[achou].sexo = sexo
+                        if(peso) jogadores[achou].peso = peso
+                        if(altura) jogadores[achou].altura = altura
+                        if(emails) jogadores[achou].emails = emails
+                        if(telefones) jogadores[achou].telefones = telefones
+                        if(posicao_jogo) jogadores[achou].posicao_jogo = posicao_jogo
+                        console.log('jogadores:', JSON.stringify(jogadores))
+                        localStorage.setItem("jogadoresStorage", JSON.stringify(jogadores))
+                        alert('jogador alterado')
+                    }
                     
                 }catch(e){
                     console.log(e)
                     alert(e)
                 }
-                
-                
             }
+            function deleta(){
+                try{
+                    let achou = -1
+                    let storage = localStorage.getItem("jogadoresStorage");
+                    let jogadores = JSON.parse(storage);
+                    let cpf = document.getElementById("cpf").value
+                    console.log(cpf)
+                    let newJogadores
+                    for(let i = 0; i < jogadores.length; i++){
+                        if(cpf == jogadores[i].cpf){
+                            achou = i
+                            newJogadores = jogadores.filter((item) => item.cpf !== cpf)
+                            console.log('jogadores', newJogadores)
+                        }
+                    }
+                    localStorage.setItem("jogadoresStorage", JSON.stringify(newJogadores))
+                    alert('jogador deletado')
+                    }catch(e){
+                    console.log(e)
+                    alert(e)
+                }
+            }       
         </script>
     </head>
     <body>
@@ -78,11 +242,11 @@
             
             <h3>SELECIONE A OPÇÃO QUE DESEJA UTILIZAR</h3>
             <div>
-                <button onclick="Incluir()">INCLUIR</button>
-                <button>LISTAR TODOS</button>
-                <button>LISTAR UM</button>
-                <button>ALTERAR</button>
-                <button>EXCLUIR</button>
+                <button onclick="incluir()">INCLUIR</button>
+                <button onclick="listarTodos()">LISTAR TODOS</button>
+                <button onclick="listarUm()">LISTAR UM</button>
+                <button onclick="altera()">ALTERAR</button>
+                <button onclick="deleta()">EXCLUIR</button>
             </div>
         </div>
         <table id="tabela">
