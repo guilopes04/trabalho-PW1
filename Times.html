@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Menu de Times</title>
+        <link rel="stylesheet" href="submenus.css">
+        <script>
+            let times = []
+            function incluir(){
+                try{
+                    let achou = false
+                    let storage = localStorage.getItem("jogadoresStorage");
+                    let codigo = document.getElementById("codigo").value
+                    if(storage){
+                        let times = JSON.parse(storage);
+                        console.log(times);
+                        for(let i = 0; i < times.length; i++){
+                            if(codigo == times[i].codigo){
+                                alert(`O time com o codigo ${codigo} já existe`)
+                                achou = true
+                            }
+                        }
+                    }
+                    
+                    if(!achou || !storage){
+                        let nome = document.getElementById("nome").value
+                        let data = document.getElementById("data").value
+                        let logradouro = document.getElementById("logradouro").value
+                        let numero = document.getElementById("numero").value
+                        let cep = document.getElementById("cep").value
+                        let cidade = document.getElementById("cidade").value
+                        let estado = document.getElementById("estado").value
+                        let telefones = document.getElementById("telefones").value
+                        let fundadores = document.getElementById("fundadores").value
+                        const time = { 
+                            codigo: codigo,
+                            nome: nome,
+                            data: data,
+                            logradouro: logradouro,
+                            numero: numero,
+                            cep: cep,
+                            cidade: cidade,
+                            estado: estado,
+                            telefones: telefones,
+                            fundadores: fundadores
+                        }
+                        times.push(time)
+                        console.log('times:', JSON.stringify(times))
+                        localStorage.setItem("timesStorage", JSON.stringify(times))
+                        let str = '<tr>'
+                        let tabela = document.getElementById("tabela").lastElementChild
+                        console.log(tabela)
+                        let atrs = [codigo, nome, data, logradouro, numero, cep, cidade, estado, telefones, fundadores]
+                        let tr = document.createElement("tr")
+                        let td
+                        for(let atr of atrs){
+                            let textNode = document.createTextNode(`${atr}`);
+                            td = document.createElement("td");
+                            td.appendChild(textNode);
+                            tr.appendChild(td);
+                        }
+                        let elementoTabela = document.getElementById("tabela");
+                        elementoTabela.appendChild(tr);
+                    }
+                }catch(e){
+                    console.log(e)
+                    alert(e)
+                }
+            }
+            function listarTodos(){
+                try{
+                    let achou = -1
+                    let storage = localStorage.getItem("timesStorage");
+                    console.log(storage)
+                    if(storage){
+                        let lista_times = JSON.parse(storage);
+                        console.log(lista_times);
+                        let str = '<tr>'
+                        str += '<th>CODIGO</th>'
+                        str += '<th>NOME</th>'
+                        str += '<th>DATA DE FUNDAÇÃO</th>'
+                        str += '<th>LOGRADOURO</th>'
+                        str += '<th>NUMERO</th>'
+                        str += '<th>CEP</th>'
+                        str += '<th>CIDADE</th>'
+                        str += '<th>ESTADO</th>'
+                        str += '<th>TELEFONES</th>'
+                        str += '<th>FUNDADORES</th>'
+                        str += '</tr>'
+                        for(time of lista_times){
+                            str += '<tr>'
+                            str += '<td>' + time.codigo + '</td>'
+                            str += '<td>' + time.nome + '</td>'
+                            str += '<td>' + time.data + '</td>'
+                            str += '<td>' + time.logradouro + '</td>'
+                            str += '<td>' + time.numero + '</td>'
+                            str += '<td>' + time.cep + '</td>'
+                            str += '<td>' + time.cidade + '</td>'
+                            str += '<td>' + time.estado + '</td>'
+                            str += '<td>' + time.telefones + '</td>'
+                            str += '<td>' + time.fundadores + '</td>'
+                            str += '</tr>'
+                        }
+                        let elementoTabela = document.getElementById("tabela");
+                        elementoTabela.innerHTML = str
+                    }else{
+                        alert('não existe times')
+                    }
+                        
+                }catch(e){
+                    console.log(e)
+                    alert(e)
+                }
+            }
+            function listarUm(){
+                try{
+                    let achou = -1
+                    let storage = localStorage.getItem("timesStorage");
+                    if(storage){
+                        let times = JSON.parse(storage);
+                        let codigo = document.getElementById("codigo").value
+                        for(let i = 0; i < times.length; i++){
+                            if(codigo == times[i].codigo){
+                                achou = i
+                            }
+                        }
+                        if(achou != -1){
+                            let str = '<tr>'
+                            str += '<th>CODIGO</th>'
+                            str += '<th>NOME</th>'
+                            str += '<th>DATA DE FUNDAÇÃO</th>'
+                            str += '<th>LOGRADOURO</th>'
+                            str += '<th>NUMERO</th>'
+                            str += '<th>CEP</th>'
+                            str += '<th>CIDADE</th>'
+                            str += '<th>ESTADO</th>'
+                            str += '<th>TELEFONES</th>'
+                            str += '<th>FUNDADORES</th>'
+                            str += '</tr>'
+                            str += '<tr>'
+                            str += '<td>' + times[achou].codigo + '</td>'
+                            str += '<td>' + times[achou].nome + '</td>'
+                            str += '<td>' + times[achou].data + '</td>'
+                            str += '<td>' + times[achou].logradouro + '</td>'
+                            str += '<td>' + times[achou].numero + '</td>'
+                            str += '<td>' + times[achou].cep + '</td>'
+                            str += '<td>' + times[achou].cidade + '</td>'
+                            str += '<td>' + times[achou].estado + '</td>'
+                            str += '<td>' + times[achou].telefones + '</td>'
+                            str += '<td>' + times[achou].fundadores + '</td>'
+                            str += '</tr>'
+                            let elementoTabela = document.getElementById("tabela");
+                            elementoTabela.innerHTML = str
+                        }else{
+                            alert("time não encontrado")
+                        }
+                    }else{
+                        alert('não existe times')
+                    }
+                }catch(e){
+                    console.log(e)
+                    alert(e)
+                }
+            }
+            function altera(){
+                try{
+                    let achou = -1
+                    let storage = localStorage.getItem("timesStorage");
+                    let times = JSON.parse(storage);
+                    let codigo = document.getElementById("codigo").value
+                    for(let i = 0; i < times.length; i++){
+                        if(codigo == times[i].codigo){
+                            achou = i
+                        }
+                    }
+                    if(achou != -1){
+                        let nome = document.getElementById("nome").value
+                        let data = document.getElementById("data").value
+                        let logradouro = document.getElementById("logradouro").value
+                        let numero = document.getElementById("numero").value
+                        let cep = document.getElementById("cep").value
+                        let cidade = document.getElementById("cidade").value
+                        let estado = document.getElementById("estado").value
+                        let telefones = document.getElementById("telefones").value
+                        let fundadores = document.getElementById("fundadores").value
+                        if(nome) times[achou].nome = nome
+                        if(data) times[achou].data = data
+                        if(logradouro) times[achou].logradouro = logradouro
+                        if(numero) times[achou].numero = numero
+                        if(cep) times[achou].cep = cep
+                        if(cidade) times[achou].cidade = cidade
+                        if(estado) times[achou].estado = estado
+                        if(telefones) times[achou].telefones = telefones
+                        if(fundadores) times[achou].fundadores = fundadores
+                        console.log('times:', JSON.stringify(times))
+                        localStorage.setItem("timesStorage", JSON.stringify(times))
+                        alert('time alterado')
+                    }
+                    
+                }catch(e){
+                    console.log(e)
+                    alert(e)
+                }
+            }
+            function deleta(){
+                try{
+                    let achou = -1
+                    let storage = localStorage.getItem("timesStorage");
+                    let times = JSON.parse(storage);
+                    let codigo = document.getElementById("codigo").value
+                    console.log(codigo)
+                    let newTimes
+                    for(let i = 0; i < times.length; i++){
+                        if(codigo == times[i].codigo){
+                            achou = i
+                            newTimes = times.filter((item) => item.codigo !== codigo)
+                            console.log('times', newTimes)
+                        }
+                    }
+                    localStorage.setItem("timesStorage", JSON.stringify(newTimes))
+                    alert('time deletado')
+                    }catch(e){
+                    console.log(e)
+                    alert(e)
+                }
+            }       
+        </script>
+    </head>
+    <body>
+        <div class="menu_principal">
+            <h1>MENU TIMES</h1>
+            <label>CÓDIGO: <input id="codigo"></label>
+            
+            <label>NOME: <input id="nome"></label>
+            
+            <label>DATA DE FUNDAÇÃO: <input type="date" id="data"></label>
+            
+            <label>LOGRADOURO: <input id="logradouro"></label>
+            
+            <label>NUMERO: <input id="numero"></label>
+            
+            <label>CEP: <input id="cep"></label>
+            
+            <label>CIDADE: <input id="cidade" type="email"></label>
+            
+            <label>ESTADO: <input id="estado" type=""></label>
+            
+            <label>TELEFONES: <input id="telefones"></label>
+
+            <label>FUNDADORES: <input id="fundadores"></label>
+            
+            <h3>SELECIONE A OPÇÃO QUE DESEJA UTILIZAR</h3>
+            <div>
+                <button onclick="incluir()">INCLUIR</button>
+                <button onclick="listarTodos()">LISTAR TODOS</button>
+                <button onclick="listarUm()">LISTAR UM</button>
+                <button onclick="altera()">ALTERAR</button>
+                <button onclick="deleta()">EXCLUIR</button>
+            </div>
+        </div>
+        <table id="tabela">
+            <tr>
+              <th>CÓDIGO</th>
+              <th>NOME</th>
+              <th>DATA DE FUNDAÇÃO</th>
+              <th>LOGRADOURO</th>
+              <th>NUMERO</th>
+              <th>CEP</th>
+              <th>CIDADE</th>
+              <th>ESTADO</th>
+              <th>TELEFONES</th>
+              <th>FUNDADORES</th>
+            </tr>
+          </table>
+    </body>
+</html>
