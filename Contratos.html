@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Menu de Contratos</title>
+        <link rel="stylesheet" href="submenus.css">
+        <script>
+            let contratos = []
+            function incluir(){
+                try{
+                    let achouContrato = false
+                    let storageContratos = localStorage.getItem("contratosStorage");
+                    let cpf = document.getElementById("cpf").value
+                    let codigo = document.getElementById("codigo").value
+                    let data = document.getElementById("data").value
+                    if(storageContratos){
+                        let contratos = JSON.parse(storageContratos);
+                        console.log('contratos', contratos);
+                        for(let i = 0; i < contratos.length; i++){
+                            if(cpf == contratos[i].cpf && codigo == contratos[i].codigo && data == contratos[i].data){
+                                achouContrato = true
+                            }
+                        }
+                    }
+                    if(!achouContrato){
+                        let achouJogador = false
+                        let storageJogadores = localStorage.getItem("jogadoresStorage");
+                        if(storageJogadores){
+                            let jogadores = JSON.parse(storageJogadores);
+                            console.log('jogadores', jogadores);
+                            for(let i = 0; i < jogadores.length; i++){
+                                if(cpf == jogadores[i].cpf){
+                                    achouJogador = true
+                                }
+                            }
+                        }
+
+                        let achouTime = false
+                        let storageTimes = localStorage.getItem("timesStorage");
+                        if(storageTimes){
+                            let times = JSON.parse(storageTimes);
+                            console.log('times', times);
+                            for(let i = 0; i < times.length; i++){
+                                if(codigo == times[i].codigo){
+                                    achouTime = true
+                                }
+                            }
+                        }
+                        if(achouJogador == true && achouTime == true){
+                            let salario = document.getElementById("salario").value
+                            let saida = document.getElementById("saida").value
+                            const contrato = { 
+                                cpf: cpf,
+                                codigo: codigo,
+                                data: data,
+                                salario: salario,
+                                saida: saida
+                            }
+                            contratos.push(contrato)
+                            console.log('contratos:', JSON.stringify(contratos))
+                            localStorage.setItem("contratosStorage", JSON.stringify(contratos))
+                            let str = '<tr>'
+                            let tabela = document.getElementById("tabela").lastElementChild
+                            console.log(tabela)
+                            let atrs = [cpf, codigo, data, salario, saida]
+                            let tr = document.createElement("tr")
+                            let td
+                            for(let atr of atrs){
+                                let textNode = document.createTextNode(`${atr}`);
+                                td = document.createElement("td");
+                                td.appendChild(textNode);
+                                tr.appendChild(td);
+                            }
+                            let elementoTabela = document.getElementById("tabela");
+                            elementoTabela.appendChild(tr);
+                        }
+
+                        if(achouJogador == false){alert(`Jogador com cpf ${cpf} não encontrado, insira um valor válido`)} 
+                        if(achouTime == false) {alert(`Time com codigo ${codigo} não encontrado, insira um valor válido`)}
+                    }else{
+                        alert('contrato já existente')
+                    }
+                    
+
+                }catch(e){
+                    console.log(e)
+                    alert(e)
+                }
+            }
+            function listarTodos(){
+                try{
+                    let achou = -1
+                    let storage = localStorage.getItem("contratosStorage");
+                    console.log(storage)
+                    if(storage){
+                        let lista_contratos = JSON.parse(storage);
+                        console.log('lista_contratos', lista_contratos);
+                        let str = '<tr>'
+                        str += '<th>CPF JOGADOR</th>'
+                        str += '<th>CÓDIGO JOGADOR</th>'
+                        str += '<th>DATA DE INÍCIO</th>'
+                        str += '<th>SALÁRIO</th>'
+                        str += '<th>MOTIVOS SAÍDA</th>'
+                        str += '</tr>'
+                        for(contrato of lista_contratos){
+                            str += '<tr>'
+                            str += '<td>' + contrato.cpf + '</td>'
+                            str += '<td>' + contrato.codigo + '</td>'
+                            str += '<td>' + contrato.data + '</td>'
+                            str += '<td>' + contrato.salario + '</td>'
+                            str += '<td>' + contrato.saida + '</td>'
+                            str += '</tr>'
+                        }
+                        let elementoTabela = document.getElementById("tabela");
+                        elementoTabela.innerHTML = str
+                    }else{
+                        alert('não existe contratos')
+                    }
+                        
+                }catch(e){
+                    console.log(e)
+                    alert(e)
+                }
+            }
+            function listarUm(){
+                try{
+                    let achou = -1
+                    let storageContratos = localStorage.getItem("contratosStorage");
+                    let cpf = document.getElementById("cpf").value
+                    let codigo = document.getElementById("codigo").value
+                    let data = document.getElementById("data").value
+                    if(storageContratos){
+                        let contratos = JSON.parse(storageContratos);
+                        console.log('contratos', contratos);
+                        for(let i = 0; i < contratos.length; i++){
+                            if(cpf == contratos[i].cpf && codigo == contratos[i].codigo && data == contratos[i].data){
+                                achou = i
+                            }
+                        }
+                    }
+                    if(achou != -1){
+                            let str = '<tr>'
+                            str += '<th>CPF JOGADOR</th>'
+                            str += '<th>CÓDIGO JOGADOR</th>'
+                            str += '<th>DATA DE INÍCIO</th>'
+                            str += '<th>SALARIO</th>'
+                            str += '<th>MOTIVO SAÍDA</th>'
+                            str += '</tr>'
+                            str += '<tr>'
+                            str += '<td>' + contratos[achou].cpf + '</td>'
+                            str += '<td>' + contratos[achou].codigo + '</td>'
+                            str += '<td>' + contratos[achou].data + '</td>'
+                            str += '<td>' + contratos[achou].salario + '</td>'
+                            str += '<td>' + contratos[achou].saida + '</td>'
+                            str += '</tr>'
+                            let elementoTabela = document.getElementById("tabela");
+                            elementoTabela.innerHTML = str
+                        }else{
+                            alert("jogador não encontrado")
+                        }
+                }catch(e){
+                    console.log(e)
+                    alert(e)
+                }
+            }
+            function altera(){
+                try{
+                    let achou = -1
+                    let storage = localStorage.getItem("contratosStorage");
+                    let contratos = JSON.parse(storage);
+                    let cpf = document.getElementById("cpf").value
+                    let codigo = document.getElementById("codigo").value
+                    let data = document.getElementById("data").value
+                    for(let i = 0; i < contratos.length; i++){
+                        if(cpf == contratos[i].cpf && codigo == contratos[i].codigo && data == contratos[i].data){
+                            achou = i
+                        }
+                    }
+                    if(achou != -1){
+                        let salario = document.getElementById("salario").value
+                        let saida = document.getElementById("saida").value
+                        if(salario) contratos[achou].salario = salario
+                        if(saida) contratos[achou].saida = saida
+                        console.log('contratos:', JSON.stringify(contratos))
+                        localStorage.setItem("contratosStorage", JSON.stringify(contratos))
+                        alert('contrato alterado')
+                    }
+                    
+                }catch(e){
+                    console.log(e)
+                    alert(e)
+                }
+            }
+            function deleta(){
+                try{
+                    let achou = -1
+                    let storage = localStorage.getItem("jogadoresStorage");
+                    let contratos = JSON.parse(storage);
+                    let cpf = document.getElementById("cpf").value
+                    let codigo = document.getElementById("codigo").value
+                    let data = document.getElementById("data").value
+                    let newContratos
+                    for(let i = 0; i < contratos.length; i++){
+                        if(cpf == contratos[i].cpf && codigo == contratos[i].codigo && data == contratos[i].data){
+                            achou = i
+                            newContratos = contratos.filter((item) => item.cpf !== cpf)
+                            console.log('newContratos', newContratos)
+                        }
+                    }
+                    localStorage.setItem("contratosStorage", JSON.stringify(newContratos))
+                    alert('contrato deletado')
+                }catch(e){
+                    console.log(e)
+                    alert(e)
+                }
+            }       
+        </script>
+    </head>
+    <body>
+        <div class="menu_principal">
+            <h1>MENU CONTRATOS</h1>
+            <label>CPF JOGADOR: <input id="cpf"></label>
+            
+            <label>CÓDIGO TIME: <input id="codigo"></label>
+            
+            <label>DATA ÍNICIO: <input type="date" id="data"></label>
+            
+            <label>SALÁRIO: <input id="salario"></label>
+            
+            <label>MOTIVOS SAIDA: <input id="saida"></label>
+            
+            <h3>SELECIONE A OPÇÃO QUE DESEJA UTILIZAR</h3>
+            <div>
+                <button onclick="incluir()">INCLUIR</button>
+                <button onclick="listarTodos()">LISTAR TODOS</button>
+                <button onclick="listarUm()">LISTAR UM</button>
+                <button onclick="altera()">ALTERAR</button>
+                <button onclick="deleta()">EXCLUIR</button>
+            </div>
+        </div>
+        <table id="tabela">
+            <tr>
+              <th>CPF JOGADOR</th>
+              <th>CÓDIGO TIME</th>
+              <th>DATA ÍNICIO</th>
+              <th>SALÁRIO</th>
+              <th>MOTIVOS SAÍDA</th>
+            </tr>
+          </table>
+    </body>
+</html>
